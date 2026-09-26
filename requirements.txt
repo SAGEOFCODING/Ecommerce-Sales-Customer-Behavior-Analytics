@@ -6,6 +6,7 @@ seaborn>=0.12.0
 scipy>=1.10.0
 statsmodels>=0.14.0
 flask>=2.3.0
+gunicorn>=21.2.0
 pytest>=7.4.0
 jupyter>=1.0.0
 nbconvert>=7.0.0
@@ -15,3 +16,4 @@ missingno>=0.5.2
 squarify>=0.4.5
 matplotlib-venn>=1.1.2
 adjustText>=1.4.0
+
