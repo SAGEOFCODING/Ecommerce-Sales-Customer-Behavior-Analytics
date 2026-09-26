@@ -1,0 +1,9 @@
+Change_ID,Phase,Field,Action,Rationale,Records_Affected,Status
+CR-001,Standardization,All Object/String Columns,Whitespace Strip & Proper Trimming,Eliminate invisible padding and whitespace irregularities.,1200,Verified
+CR-002,Strategic Imputation,CouponCode,Impute NaN with 'NO_COUPON',Listwise deletion would discard 309 valid transactions. Absence of coupon signifies standard checkout.,309,Verified
+CR-003,Harmonization,Date,Convert to DateTime & Generate Date_ISO (YYYY-MM-DD),Ensures ISO 8601 compliance and temporal sorting across database engines.,1200,Verified
+CR-004,Data Types,"Quantity, ItemsInCart, UnitPrice, TotalPrice",Explicit type casting & 2-decimal floating point precision,Enforce financial numeric consistency and prevent floating point drift.,1200,Verified
+CR-005,Integrity Audit,TotalPrice,Cross-check TotalPrice == Quantity * UnitPrice,Verify that transaction totals accurately equal price multiplied by quantity.,0,Verified (0 Errors)
+CR-006,Deduplication,OrderID,Deduplicate by Unique Order Identifier,Enforce 0% error threshold on primary keys per DecodeLabs Phase 2 audit.,0,Verified (0 Duplicates Found)
+CR-007,Outlier Diagnostics,"TotalPrice, Quantity, UnitPrice",Compute IQR bounds and Z-Scores; flag statistical anomalies,Distinguish between true noise and valid high-value orders per EDA kit.,8,Verified
+CR-008,Feature Engineering,"OrderYear, OrderMonth, OrderDayOfWeek, IsWeekend, HasCoupon, StatusGroup",Synthesize temporal and operational dimensions,Provide pre-computed dimensions for rapid SQL aggregation and dashboard slicing.,1200,Verified

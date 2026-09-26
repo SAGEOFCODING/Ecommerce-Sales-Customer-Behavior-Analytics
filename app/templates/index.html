@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce Sales & Customer Behavior Analytics | DecodeLabs</title>
+  <meta name="description" content="Industrial Data Analytics Platform developed for DecodeLabs Enterprise Intelligence.">
+  
+  <!-- Modern Minimal Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <!-- Plotly.js for Professional Interactive Analytics -->
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+  <!-- Curated Minimalist Stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="branding">
+        <div class="brand-logo">DECODELABS</div>
+        <div class="brand-divider">/</div>
+        <div class="brand-meta">
+          <span class="project-title">E-Commerce Intelligence Platform</span>
+          <span class="project-tag">Enterprise Analytics Edition</span>
+        </div>
+      </div>
+      <div class="header-status">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>SQLite Engine Connected</span>
+        </div>
+        <div class="session-badge">Session: Verified</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+
+    <!-- Executive KPI Grid (Real Data Metrics) -->
+    <section class="kpi-section" aria-label="Key Performance Indicators">
+      <div class="kpi-grid">
+        <div class="kpi-card spotlight-card" id="kpi-gross-revenue">
+          <div class="kpi-top">
+            <span class="kpi-title">Gross Revenue</span>
+            <span class="kpi-tag">USD</span>
+          </div>
+          <div class="kpi-value" id="val-revenue">$1,264,761.96</div>
+          <div class="kpi-footer" id="footer-revenue">Across 1,200 Validated Records</div>
+        </div>
+
+        <div class="kpi-card spotlight-card" id="kpi-total-orders">
+          <div class="kpi-top">
+            <span class="kpi-title">Total Orders</span>
+            <span class="kpi-tag">Volume</span>
+          </div>
+          <div class="kpi-value" id="val-orders">1,200</div>
+          <div class="kpi-footer" id="footer-orders">100% Unique Primary Keys</div>
+        </div>
+
+        <div class="kpi-card spotlight-card" id="kpi-aov">
+          <div class="kpi-top">
+            <span class="kpi-title">Average Order Value</span>
+            <span class="kpi-tag">AOV</span>
+          </div>
+          <div class="kpi-value" id="val-aov">$1,053.97</div>
+          <div class="kpi-footer" id="footer-aov">Median Baseline: $823.62</div>
+        </div>
+
+        <div class="kpi-card spotlight-card" id="kpi-fulfillment">
+          <div class="kpi-top">
+            <span class="kpi-title">Fulfillment Rate</span>
+            <span class="kpi-tag status-success">Delivered</span>
+          </div>
+          <div class="kpi-value metric-success" id="val-fulfillment">19.25%</div>
+          <div class="kpi-footer" id="footer-fulfillment">231 Completed Shipments</div>
+        </div>
+
+        <div class="kpi-card spotlight-card" id="kpi-reversal">
+          <div class="kpi-top">
+            <span class="kpi-title">Order Reversal Rate</span>
+            <span class="kpi-tag status-danger">At Risk</span>
+          </div>
+          <div class="kpi-value metric-danger" id="val-reversal">41.42%</div>
+          <div class="kpi-footer" id="footer-reversal">497 Cancelled and Returned</div>
+        </div>
+
+        <div class="kpi-card spotlight-card" id="kpi-coupon-usage">
+          <div class="kpi-top">
+            <span class="kpi-title">Discount Penetration</span>
+            <span class="kpi-tag">Promo</span>
+          </div>
+          <div class="kpi-value" id="val-coupon">74.25%</div>
+          <div class="kpi-footer" id="footer-coupon">891 Orders with Coupons</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Filter Toolbar -->
+    <section class="filter-section" aria-label="Dataset Filters">
+      <div class="filter-card spotlight-card">
+        <div class="filter-header">
+          <h2>Multidimensional Data Filters</h2>
+          <span class="filter-sub">Real-time asynchronous dataset slicing</span>
+        </div>
+        <form id="filter-form" class="filter-form">
+          <div class="form-field">
+            <label for="filter-product">Product Line</label>
+            <select id="filter-product" name="product">
+              <option value="All">All Categories (7)</option>
+              {% for p in products %}
+              <option value="{{ p }}">{{ p }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="filter-status">Order Status</label>
+            <select id="filter-status" name="order_status">
+              <option value="All">All Statuses (5)</option>
+              {% for s in statuses %}
+              <option value="{{ s }}">{{ s }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="filter-payment">Payment Method</label>
+            <select id="filter-payment" name="payment_method">
+              <option value="All">All Payment Methods</option>
+              {% for pm in payments %}
+              <option value="{{ pm }}">{{ pm }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="filter-referral">Acquisition Channel</label>
+            <select id="filter-referral" name="referral_source">
+              <option value="All">All Acquisition Channels</option>
+              {% for r in referrals %}
+              <option value="{{ r }}">{{ r }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="filter-btn-group">
+            <button type="submit" id="btn-apply-filters" class="btn btn-primary">Apply Filters</button>
+            <button type="button" id="btn-reset-filters" class="btn btn-secondary">Reset</button>
+            <button type="button" id="btn-export-csv" class="btn btn-export" title="Export all matching filtered records as CSV">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 5px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export CSV
+            </button>
+          </div>
+        </form>
+
+        <!-- Dynamic Filter Slices Strip (Skiper UI Tag Chips) -->
+        <div id="filter-chips-bar" class="filter-chips-bar">
+          <span class="chips-label">Active Slices:</span>
+          <div id="active-filter-chips" class="active-filter-chips">
+            <span class="chip-item chip-empty">Showing All 1,200 Audited Records</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Professional Plotly Chart Grid -->
+    <section class="visuals-section" aria-label="Visual Analytics">
+      <div class="visual-row">
+        <!-- Monthly Revenue Trajectory -->
+        <div class="visual-card spotlight-card">
+          <div class="visual-header">
+            <div>
+              <h3>Monthly Gross Revenue Trajectory</h3>
+              <p class="visual-desc">30-month trend analysis (2023 to 2025)</p>
+            </div>
+            <span class="visual-indicator">Time Series</span>
+          </div>
+          <div class="plot-wrapper" id="plot-monthly-trend"></div>
+        </div>
+
+        <!-- Revenue by Product Category -->
+        <div class="visual-card spotlight-card">
+          <div class="visual-header">
+            <div>
+              <h3>Product Category Gross Revenue</h3>
+              <p class="visual-desc">Ranked comparison across 7 merchandise lines</p>
+            </div>
+            <span class="visual-indicator">Performance</span>
+          </div>
+          <div class="plot-wrapper" id="plot-product-performance"></div>
+        </div>
+      </div>
+
+      <div class="visual-row">
+        <!-- Order Fulfillment Lifecycle -->
+        <div class="visual-card spotlight-card">
+          <div class="visual-header">
+            <div>
+              <h3>Fulfillment Lifecycle Distribution</h3>
+              <p class="visual-desc">Supply chain completion vs. reverse logistics risk</p>
+            </div>
+            <span class="visual-indicator">Logistics</span>
+          </div>
+          <div class="plot-wrapper" id="plot-order-status"></div>
+        </div>
+
+        <!-- Acquisition Channel Performance -->
+        <div class="visual-card spotlight-card">
+          <div class="visual-header">
+            <div>
+              <h3>Customer Acquisition Channel Revenue</h3>
+              <p class="visual-desc">Gross revenue generated per marketing source</p>
+            </div>
+            <span class="visual-indicator">Attribution</span>
+          </div>
+          <div class="plot-wrapper" id="plot-referral-performance"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Executive Intelligence & Strategic Action Plan (EDA Diagnostic Synthesis) -->
+    <section class="insights-section" aria-label="Executive Intelligence & Strategic Action Plan">
+      <div class="insights-header">
+        <div>
+          <h2>Executive Insights & Strategic Action Plan</h2>
+          <p class="insights-sub">Root-cause diagnostic synthesis from exploratory analysis with prescriptive solutions to remediate revenue leakage</p>
+        </div>
+        <div class="insights-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          EDA Diagnostic Synthesis
+        </div>
+      </div>
+
+      <div class="insights-grid">
+        <!-- Finding 1: Reverse Logistics & Fulfillment Leakage -->
+        <div class="insight-card spotlight-card">
+          <div class="insight-top">
+            <div class="insight-title-group">
+              <div class="insight-icon insight-icon-danger">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              </div>
+              <h3 class="insight-title">Fulfillment & Reversal Leakage</h3>
+            </div>
+            <span class="kpi-tag status-danger">Critical Severity</span>
+          </div>
+
+          <div class="insight-stat-banner">
+            <span class="stat-label">Identified Exposure</span>
+            <span class="stat-figure stat-danger">41.42% Reversal Rate ($523.9k GMV)</span>
+          </div>
+
+          <div class="insight-block">
+            <span class="insight-label">The Diagnostic Finding</span>
+            <p class="insight-text">
+              Only <strong>19.25% (231 orders)</strong> of shipments reach completion. A combined <strong>41.42% (497 orders)</strong> are reversed via cancellations (20.83%) and customer returns (20.58%), indicating high pre-dispatch buyer remorse and post-delivery product expectation mismatches.
+            </p>
+          </div>
+
+          <div class="insight-block">
+            <span class="insight-label">Strategic Action Plan (How to Fix)</span>
+            <ul class="solution-list">
+              <li class="solution-item">
+                <strong>Real-Time Delivery Telemetry:</strong> Deploy instant automated SMS/WhatsApp dispatch tracking notifications within 30 minutes of purchase to minimize pre-shipment buyer remorse cancellations.
+              </li>
+              <li class="solution-item">
+                <strong>High-Ticket Checkout Verification:</strong> Institute an OTP re-confirmation step for cart totals over $1,200 (Laptops & Tablets) to eliminate impulsive or accidental transactions before warehouse picking.
+              </li>
+              <li class="solution-item">
+                <strong>Pre-Return Exchange Incentives:</strong> Offer instant 110% store credit or warranty exchanges at the return request stage to prevent direct cash reversals.
+              </li>
+            </ul>
+          </div>
+
+          <div class="target-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            Target: Reduce cancellations from 20.8% to &lt;12%, recovering ~$110,000 GMV
+          </div>
+        </div>
+
+        <!-- Finding 2: Promotional Dependency & Margin Preservation -->
+        <div class="insight-card spotlight-card">
+          <div class="insight-top">
+            <div class="insight-title-group">
+              <div class="insight-icon insight-icon-warning">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+              </div>
+              <h3 class="insight-title">Promotional Margin Erosion</h3>
+            </div>
+            <span class="kpi-tag" style="color: #fbbf24; background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.2);">High Priority</span>
+          </div>
+
+          <div class="insight-stat-banner">
+            <span class="stat-label">Identified Exposure</span>
+            <span class="stat-figure stat-warning">74.25% Discount Penetration (891 Orders)</span>
+          </div>
+
+          <div class="insight-block">
+            <span class="insight-label">The Diagnostic Finding</span>
+            <p class="insight-text">
+              Promotional codes are utilized in nearly 3 out of every 4 transactions. While the arithmetic mean order value is <strong>$1,053.97</strong>, the median rests at <strong>$823.62</strong>, proving that blanket discount codes are heavily subsidizing sub-$800 purchases without expanding cart size.
+            </p>
+          </div>
+
+          <div class="insight-block">
+            <span class="insight-label">Strategic Action Plan (How to Fix)</span>
+            <ul class="solution-list">
+              <li class="solution-item">
+                <strong>Minimum-Spend Thresholds:</strong> Eliminate unconditional discount codes. Implement tiered promotions (e.g., "$75 discount on orders exceeding $1,000") to lift smaller carts above the median.
+              </li>
+              <li class="solution-item">
+                <strong>Cross-Sell Bundle Requirements:</strong> Restrict high-demand hardware (Laptops/Tablets) from standalone discounting, requiring accessory bundling (Headphones/Keyboards) to unlock promotional savings.
+              </li>
+              <li class="solution-item">
+                <strong>Loyalty Point Accrual:</strong> Shift from upfront price discounts to post-delivery loyalty credits that incentivize high-margin repeat purchases.
+              </li>
+            </ul>
+          </div>
+
+          <div class="target-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            Target: Lift median AOV from $823.62 toward $1,050+ while preserving operating margin
+          </div>
+        </div>
+
+        <!-- Finding 3: Acquisition Attribution & Channel Rebalancing -->
+        <div class="insight-card spotlight-card">
+          <div class="insight-top">
+            <div class="insight-title-group">
+              <div class="insight-icon insight-icon-info">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+              </div>
+              <h3 class="insight-title">Channel Attribution & ROI</h3>
+            </div>
+            <span class="kpi-tag" style="color: #60a5fa; background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.2);">Growth Opportunity</span>
+          </div>
+
+          <div class="insight-stat-banner">
+            <span class="stat-label">Identified Exposure</span>
+            <span class="stat-figure stat-info">Instagram & Email: $537.1k Revenue (42.5%)</span>
+          </div>
+
+          <div class="insight-block">
+            <span class="insight-label">The Diagnostic Finding</span>
+            <p class="insight-text">
+              <strong>Instagram ($275,285)</strong> and <strong>Email ($261,808)</strong> significantly outperform Google ($250.4k), Facebook ($250.4k), and Referral channels ($226.8k). Direct word-of-mouth referrals underperform by nearly $50,000 compared to social acquisition.
+            </p>
+          </div>
+
+          <div class="insight-block">
+            <span class="insight-label">Strategic Action Plan (How to Fix)</span>
+            <ul class="solution-list">
+              <li class="solution-item">
+                <strong>Marketing Budget Reallocation:</strong> Shift 20% to 25% of ad spend from general Facebook display ads into high-converting Instagram visual storytelling and influencer integrations.
+              </li>
+              <li class="solution-item">
+                <strong>Automated Lifecycle Email Workflows:</strong> Capitalize on high email conversion by building 3-step automated cart abandonment and post-delivery replenishment sequences.
+              </li>
+              <li class="solution-item">
+                <strong>Two-Sided Referral Gamification:</strong> Revamp the referral program into a double-incentive model ($30 credit for the referrer + $30 discount for the friend) to drive organic advocacy.
+              </li>
+            </ul>
+          </div>
+
+          <div class="target-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            Target: Grow referral revenue from $226.8k to &gt;$260k with lower blended CAC
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Relational SQL Query Console -->
+    <section class="sql-section" aria-label="SQL Analytical Console">
+      <div class="sql-card spotlight-card">
+        <div class="sql-header">
+          <div>
+            <h2>Relational SQL Query Console</h2>
+            <p class="sql-sub">Direct declarative queries executed against SQLite <code>ecommerce_flat</code> & <code>fact_orders</code></p>
+          </div>
+          <div class="query-picker">
+            <label for="predefined-query-dropdown">Analytical Templates:</label>
+            <select id="predefined-query-dropdown">
+              <option value="">Select Predefined Analytical Query</option>
+              {% for key, q in predefined_queries.items() %}
+              <option value="{{ key }}">{{ q.title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="editor-area">
+          <textarea id="sql-input" spellcheck="false" placeholder="Write declarative SQL query here...">SELECT Product, COUNT(OrderID) AS total_orders, ROUND(SUM(TotalPrice), 2) AS total_revenue FROM ecommerce_flat GROUP BY Product ORDER BY total_revenue DESC;</textarea>
+          <div class="editor-footer">
+            <div class="compiler-rule">
+              Execution Sequence: <code>FROM</code> &rarr; <code>WHERE</code> &rarr; <code>GROUP BY</code> &rarr; <code>HAVING</code> &rarr; <code>SELECT</code> &rarr; <code>ORDER BY</code>
+            </div>
+            <div class="sql-btn-group">
+              <button id="btn-copy-sql" type="button" class="btn btn-secondary btn-sm" title="Copy SQL statement to clipboard">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Copy SQL</span>
+              </button>
+              <button id="btn-run-sql" class="btn btn-action">Execute Query</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Output -->
+        <div class="terminal-container">
+          <div class="terminal-bar">
+            <span id="output-meta">Engine: Ready</span>
+            <span id="output-count">Records: 0</span>
+          </div>
+          <div class="table-scroll-container">
+            <table class="minimal-table" id="sql-results-table">
+              <thead>
+                <tr><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Run a query above to view relational output</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cleaned Transaction Explorer -->
+    <section class="data-section" aria-label="Verified Transaction Records">
+      <div class="data-card spotlight-card">
+        <div class="data-header">
+          <div>
+            <h2>Cleaned Dataset Transaction Explorer</h2>
+            <p class="data-sub">Audited records matching active multidimensional filters</p>
+          </div>
+          <div class="data-header-actions">
+            <span class="data-counter" id="record-counter">Displaying 25 Records (1,200 Total)</span>
+            <button type="button" id="btn-export-table" class="btn btn-secondary btn-sm" title="Export all matching filtered records as CSV">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export CSV
+            </button>
+          </div>
+        </div>
+        <div class="table-scroll-container">
+          <table class="minimal-table" id="transactions-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date (ISO)</th>
+                <th>Customer ID</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Channel</th>
+              </tr>
+            </thead>
+            <tbody id="transactions-tbody">
+              <!-- Dynamically populated via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Clean Minimalist Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-title">DecodeLabs Enterprise Analytics</div>
+        <div class="footer-copy">Built with Python, SQLite, Flask, and Plotly. High Data-Ink ratio visual architecture.</div>
+      </div>
+      <div class="footer-info">
+        <div class="info-item"><strong>Dataset:</strong> 1,200 Audited Orders</div>
+        <div class="info-item"><strong>Integrity:</strong> 0% ID and Date Format Errors</div>
+        <div class="info-item"><strong>Status:</strong> Production Verified</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Script -->
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
